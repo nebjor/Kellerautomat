@@ -25,24 +25,20 @@ Deterministischer Kellerautomat zur Auswertung von **UPN** (Umgekehrte Polnische
 
 ## Starten
 
+**Compile:**
 ```powershell
-cd C:\Users\jnebe\IdeaProjects\Kellerautomat
 javac -encoding UTF-8 -d out src\Main.java src\pda\*.java src\ui\*.java
-```
+**Run:**
 
 ### GUI (Standard)
 ```powershell
 java -cp out Main
 ```
 
-### Konsole
+### CLI Modes
 ```powershell
-java -cp out Main step "23+4*"
-java -cp out Main lauf "31 78 + 987 + 1214 + 7 +"
-java -cp out Main cli
-```
-
-### Schnelltest
-```powershell
-java -cp out Main test
+java -cp out Main step "<expression>"    # Step-Modus (1s Pause pro Schritt)
+java -cp out Main lauf "<expression>"    # Lauf-Modus (alle Schritte sofort)
+java -cp out Main cli                    # Interaktiver Modus
+java -cp out Main test                   # Schnelltest
 ```
