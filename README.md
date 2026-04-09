@@ -28,6 +28,8 @@ Deterministischer Kellerautomat zur Auswertung von **UPN** (Umgekehrte Polnische
 **Compile:**
 ```powershell
 javac -encoding UTF-8 -d out src\Main.java src\pda\*.java src\ui\*.java
+```
+
 **Run:**
 
 ### GUI (Standard)
