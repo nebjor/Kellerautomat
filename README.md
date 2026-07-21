@@ -1,9 +1,11 @@
 # Kellerautomat – UPN-Rechner
 
-Deterministischer Kellerautomat zur Auswertung von **UPN** (Umgekehrte Polnische Notation) mit grafischer und textueller Darstellung.
+Deterministischer Kellerautomat zur Auswertung von UPN (Umgekehrte Polnische Notation) mit grafischer und textueller Darstellung.
 
-Ein Lehrbespiel-Projekt zum Verständnis von **Kellerautomaten** und deren Funktionsweise. Die Anwendung ermöglicht es, mathematische Ausdrücke in UPN schrittweise zu verarbeiten und die Stack-Operationen visuell nachzuvollziehen.
+Ein Lehrbeispiel zum Verständnis von Kellerautomaten und deren Funktionsweise. Die Anwendung verarbeitet mathematische Ausdrücke in UPN schrittweise und macht die Stack-Operationen sichtbar.
+
 ## Interfaces
+
 ### CLI
 ![img_1.png](img_1.png)
 
@@ -12,18 +14,15 @@ Ein Lehrbespiel-Projekt zum Verständnis von **Kellerautomaten** und deren Funkt
 
 ## Features
 
-- Eigener Stack (`IntStack`) – kein `java.util.Stack`
+- Eigener Stack (`IntStack`) statt `java.util.Stack`
 - Operatoren `+` und `*`
-- Kompakte Eingabe (`23+4*`) und Token-Eingabe mit mehrstelligen Zahlen (`31 78 + 1214 +`)
-- **CLI Modi:**
-  - Step-Modus: 1 Sekunde Pause pro Berechnungsschritt (ideal zum Nachvollziehen)
-  - Lauf-Modus: Alle Schritte sofort hintereinander
-  - Interaktive CLI
-- **GUI** mit animierter Stack-Darstellung (Swing-basiert)
+- Token-Eingabe mit mehrstelligen Zahlen, durch Leerzeichen getrennt (z. B. `31 78 + 1214 +`)
+- CLI mit drei Modi: Step (Pause pro Schritt), Lauf (alle Schritte sofort) und interaktiv
+- Swing-GUI mit animierter Stack-Darstellung
 
 ## Voraussetzungen
 
-- Java Development Kit (JDK) 8 oder höher
+- Java Development Kit (JDK) 17 oder höher (die Klasse `EvaluationStep` nutzt ein `record`)
 - Terminal/Konsole für Kompilierung
 
 ## Klassen
@@ -54,46 +53,52 @@ java -cp out Main
 ```
 Startet das grafische Interface mit animierter Stack-Visualisierung.
 
-### CLI Modes
+### CLI-Modi
 
 #### Step-Modus (mit Pausen)
 ```powershell
 java -cp out Main step "3 4 + 2 *"
 ```
-Berechnet UPN-Ausdrücke schrittweise mit 1 Sekunde Pause zwischen den Schritten. Perfekt zum Lernen!
+Wertet den Ausdruck schrittweise aus, mit einer Sekunde Pause zwischen den Schritten.
 
 #### Lauf-Modus (direkt)
 ```powershell
 java -cp out Main lauf "3 4 + 2 *"
 ```
-Führt alle Schritte direkt hintereinander aus und zeigt nur das Endergebnis.
+Führt alle Schritte direkt hintereinander aus.
 
 #### Interaktiver Modus
 ```powershell
 java -cp out Main cli
 ```
-Eingabe von Ausdrücken in der interaktiven Kommandozeile.
+Eingabe von Ausdrücken in einer interaktiven Kommandozeile. Ein vorangestelltes `step ` schaltet für die jeweilige Eingabe in den Step-Modus; `quit` beendet.
 
 #### Test
 ```powershell
 java -cp out Main test
 ```
-Führt vordefinierte Test-Ausdrücke aus.
+Führt vordefinierte Test- und Ablehnungsfälle aus.
 
-## Screenshots & Beispiele
+## Beispiel
+
+Ausdruck `3 4 + 2 *` = 14.
 
 ### GUI
 Das grafische Interface zeigt die animierte Stack-Visualisierung. Mit jedem Verarbeitungsschritt wird der Stack aktualisiert.
 
-**Beispielausdruck:** `3 4 + 2 *` = 14
+### CLI Step-Modus
+```
+=== Step-Modus ===
+Ausdruck: 3 4 + 2 *
 
-### CLI Step-Modus Output
+  Schritt 1  │  Token: 3      │  Stack: [3]
+  Schritt 2  │  Token: 4      │  Stack: [3, 4]
+  Schritt 3  │  Token: +      │  Stack: [7]
+  Schritt 4  │  Token: 2      │  Stack: [7, 2]
+  Schritt 5  │  Token: *      │  Stack: [14]
+  Schritt 6  │  Token: ε  │  Stack: [14] (ε-Übergang)
+
+✓ Akzeptiert. Resultat = 14
 ```
-Eingabe: 3 4 + 2 *
-Schritt 1: Zahl 3      | Stack: [3]
-Schritt 2: Zahl 4      | Stack: [3, 4]
-Schritt 3: + Operation | Stack: [7]
-Schritt 4: Zahl 2      | Stack: [7, 2]
-Schritt 5: * Operation | Stack: [14]
-Ergebnis: 14 ✓ AKZEPTIERT
-```
+
+Der abschliessende ε-Übergang prüft, ob genau ein Wert auf dem Stack liegt. Bleibt mehr als ein Wert übrig oder tritt ein ungültiges Token auf, wird die Eingabe verworfen.
